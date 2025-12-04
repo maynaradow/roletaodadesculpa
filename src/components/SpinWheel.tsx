@@ -34,11 +34,11 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     setRotation(prev => prev + finalAngle);
     
-    // 3 seconds spin duration
+    // 5 seconds spin duration
     setTimeout(() => {
       setIsSpinning(false);
       onSpinComplete(randomSegment);
-    }, 3000);
+    }, 5000);
   };
 
   const segmentAngle = 360 / SEGMENTS.length;
@@ -112,7 +112,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
               width="334" 
               height="334" 
               viewBox="0 0 350 350"
-              className="transition-transform duration-[3000ms] ease-out"
+              className="transition-transform duration-[5000ms] ease-out"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
               <g ref={wheelRef}>
@@ -139,25 +139,25 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
                       />
                       <text
                         x={textPos.x}
-                        y={textPos.y - 12}
+                        y={textPos.y - 8}
                         fill="white"
-                        fontSize="22"
+                        fontSize="20"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y - 12})`}
+                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y})`}
                         style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.5)" }}
                       >
                         {segment.icon}
                       </text>
                       <text
                         x={textPos.x}
-                        y={textPos.y + 8}
+                        y={textPos.y + 12}
                         fill="white"
-                        fontSize="10"
+                        fontSize="9"
                         fontWeight="bold"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y + 8})`}
+                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y})`}
                         style={{ 
                           textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                           fontFamily: "'Nunito', sans-serif"
