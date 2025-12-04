@@ -26,8 +26,8 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     setIsSpinning(true);
     
-    // Random spins between 3-5 full rotations plus random segment
-    const spins = 3 + Math.random() * 2;
+    // Random spins between 8-12 full rotations plus random segment for longer visual effect
+    const spins = 8 + Math.random() * 4;
     const randomSegment = Math.floor(Math.random() * 6);
     const segmentAngle = 360 / 6;
     const finalAngle = spins * 360 + (randomSegment * segmentAngle) + (segmentAngle / 2);
@@ -112,8 +112,11 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
               width="334" 
               height="334" 
               viewBox="0 0 350 350"
-              className="transition-transform duration-[5000ms] ease-out"
-              style={{ transform: `rotate(${rotation}deg)` }}
+              style={{ 
+                transform: `rotate(${rotation}deg)`,
+                transition: 'transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99)'
+              }}
+              
             >
               <g ref={wheelRef}>
                 {SEGMENTS.map((segment, index) => {
