@@ -26,18 +26,19 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     setIsSpinning(true);
     
-    // Random spins between 5-10 full rotations plus random segment
-    const spins = 5 + Math.random() * 5;
+    // Random spins between 3-5 full rotations plus random segment
+    const spins = 3 + Math.random() * 2;
     const randomSegment = Math.floor(Math.random() * 6);
     const segmentAngle = 360 / 6;
     const finalAngle = spins * 360 + (randomSegment * segmentAngle) + (segmentAngle / 2);
     
     setRotation(prev => prev + finalAngle);
     
+    // 3 seconds spin duration
     setTimeout(() => {
       setIsSpinning(false);
       onSpinComplete(randomSegment);
-    }, 5000);
+    }, 3000);
   };
 
   const segmentAngle = 360 / SEGMENTS.length;
@@ -72,12 +73,13 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
       {/* Outer glow ring */}
       <div className="absolute inset-0 -m-4 rounded-full bg-gradient-to-r from-primary via-secondary to-accent opacity-50 blur-xl animate-pulse-glow" />
       
-      {/* Decorative lights around wheel */}
-      <div className="absolute inset-0 -m-6">
+      {/* Decorative lights around wheel - perfect circle */}
+      <div className="absolute" style={{ width: 350, height: 350 }}>
         {[...Array(24)].map((_, i) => {
-          const angle = (i * 15) * (Math.PI / 180);
-          const x = 175 + 170 * Math.cos(angle);
-          const y = 175 + 170 * Math.sin(angle);
+          const angle = (i * 15 - 90) * (Math.PI / 180);
+          const lightRadius = 195;
+          const x = 175 + lightRadius * Math.cos(angle);
+          const y = 175 + lightRadius * Math.sin(angle);
           return (
             <div
               key={i}
@@ -110,7 +112,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
               width="334" 
               height="334" 
               viewBox="0 0 350 350"
-              className="transition-transform duration-[5000ms] ease-out"
+              className="transition-transform duration-[3000ms] ease-out"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
               <g ref={wheelRef}>
@@ -137,25 +139,25 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
                       />
                       <text
                         x={textPos.x}
-                        y={textPos.y - 8}
+                        y={textPos.y - 12}
                         fill="white"
-                        fontSize="24"
+                        fontSize="22"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y - 8})`}
+                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y - 12})`}
                         style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.5)" }}
                       >
                         {segment.icon}
                       </text>
                       <text
                         x={textPos.x}
-                        y={textPos.y + 12}
+                        y={textPos.y + 8}
                         fill="white"
                         fontSize="10"
                         fontWeight="bold"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y + 12})`}
+                        transform={`rotate(${textPos.rotation}, ${textPos.x}, ${textPos.y + 8})`}
                         style={{ 
                           textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                           fontFamily: "'Nunito', sans-serif"
@@ -180,7 +182,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
           </div>
         </div>
 
-        {/* Center spin button */}
+        {/* Center spin button - fixed position */}
         <button
           onClick={spinWheel}
           disabled={isSpinning}
@@ -189,17 +191,15 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
             "w-16 h-16 rounded-full",
             "bg-gradient-to-br from-gold-light via-gold to-gold-dark",
             "font-display text-lg text-secondary-foreground",
-            "shadow-lg transition-all duration-200",
-            "hover:scale-110 hover:shadow-xl",
-            "active:scale-95",
-            "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
-            isSpinning && "animate-wiggle"
+            "shadow-lg",
+            !isSpinning && "hover:scale-110 hover:shadow-xl active:scale-95 transition-all duration-200",
+            "disabled:opacity-70 disabled:cursor-not-allowed"
           )}
           style={{
             boxShadow: "0 4px 15px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.3)",
           }}
         >
-          GIRA!
+          {isSpinning ? "..." : "GIRA!"}
         </button>
       </div>
 

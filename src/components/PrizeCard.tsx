@@ -65,13 +65,6 @@ export const PrizeCard = ({
             <p className="text-foreground font-bold italic">"{excuse}"</p>
           </div>
 
-          {/* Prize icon */}
-          <div className="text-7xl mb-4 animate-float" style={{
-          animationDelay: "0.5s"
-        }}>
-            {icon}
-          </div>
-
           {/* Prize text */}
           <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl p-4 mb-6" style={{
           boxShadow: "0 0 20px hsl(330, 100%, 60%, 0.2)"
