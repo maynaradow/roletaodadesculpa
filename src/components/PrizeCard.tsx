@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
 interface PrizeCardProps {
   excuse: string;
   prize: string;
@@ -8,72 +7,47 @@ interface PrizeCardProps {
   isVisible: boolean;
   onAccept: () => void;
 }
-
-export const PrizeCard = ({ excuse, prize, icon, isVisible, onAccept }: PrizeCardProps) => {
+export const PrizeCard = ({
+  excuse,
+  prize,
+  icon,
+  isVisible,
+  onAccept
+}: PrizeCardProps) => {
   if (!isVisible) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-        onClick={onAccept}
-      />
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={onAccept} />
       
       {/* Confetti */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute animate-confetti"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `-20px`,
-              width: `${8 + Math.random() * 8}px`,
-              height: `${8 + Math.random() * 8}px`,
-              backgroundColor: [
-                "hsl(330, 100%, 60%)",
-                "hsl(45, 100%, 55%)",
-                "hsl(180, 100%, 50%)",
-                "hsl(120, 80%, 50%)",
-                "hsl(25, 100%, 55%)",
-                "hsl(280, 100%, 65%)",
-              ][Math.floor(Math.random() * 6)],
-              borderRadius: Math.random() > 0.5 ? "50%" : "0",
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`,
-            }}
-          />
-        ))}
+        {[...Array(50)].map((_, i) => <div key={i} className="absolute animate-confetti" style={{
+        left: `${Math.random() * 100}%`,
+        top: `-20px`,
+        width: `${8 + Math.random() * 8}px`,
+        height: `${8 + Math.random() * 8}px`,
+        backgroundColor: ["hsl(330, 100%, 60%)", "hsl(45, 100%, 55%)", "hsl(180, 100%, 50%)", "hsl(120, 80%, 50%)", "hsl(25, 100%, 55%)", "hsl(280, 100%, 65%)"][Math.floor(Math.random() * 6)],
+        borderRadius: Math.random() > 0.5 ? "50%" : "0",
+        animationDelay: `${Math.random() * 2}s`,
+        animationDuration: `${2 + Math.random() * 2}s`
+      }} />)}
       </div>
 
       {/* Card */}
-      <div 
-        className={cn(
-          "relative max-w-md w-full rounded-2xl overflow-hidden",
-          "animate-bounce-in",
-          "gold-border"
-        )}
-        style={{
-          background: "linear-gradient(135deg, hsl(260, 50%, 15%), hsl(260, 60%, 10%))",
-        }}
-      >
+      <div className={cn("relative max-w-md w-full rounded-2xl overflow-hidden", "animate-bounce-in", "gold-border")} style={{
+      background: "linear-gradient(135deg, hsl(260, 50%, 15%), hsl(260, 60%, 10%))"
+    }}>
         {/* Shimmer overlay */}
         <div className="absolute inset-0 shimmer pointer-events-none" />
         
         {/* Glowing border effect */}
-        <div 
-          className="absolute inset-0 rounded-2xl"
-          style={{
-            boxShadow: "inset 0 0 30px hsl(330, 100%, 60%, 0.2), 0 0 40px hsl(45, 100%, 50%, 0.3)",
-          }}
-        />
+        <div className="absolute inset-0 rounded-2xl" style={{
+        boxShadow: "inset 0 0 30px hsl(330, 100%, 60%, 0.2), 0 0 40px hsl(45, 100%, 50%, 0.3)"
+      }} />
 
         <div className="relative p-6 sm:p-8 text-center">
           {/* Trophy/Star decoration */}
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-5xl animate-float">
-            🏆
-          </div>
+          
 
           {/* Header */}
           <div className="mt-8 mb-4">
@@ -92,52 +66,39 @@ export const PrizeCard = ({ excuse, prize, icon, isVisible, onAccept }: PrizeCar
           </div>
 
           {/* Prize icon */}
-          <div 
-            className="text-7xl mb-4 animate-float"
-            style={{ animationDelay: "0.5s" }}
-          >
+          <div className="text-7xl mb-4 animate-float" style={{
+          animationDelay: "0.5s"
+        }}>
             {icon}
           </div>
 
           {/* Prize text */}
-          <div 
-            className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl p-4 mb-6"
-            style={{
-              boxShadow: "0 0 20px hsl(330, 100%, 60%, 0.2)",
-            }}
-          >
+          <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl p-4 mb-6" style={{
+          boxShadow: "0 0 20px hsl(330, 100%, 60%, 0.2)"
+        }}>
             <p className="text-lg sm:text-xl text-foreground font-bold leading-relaxed">
               {prize}
             </p>
           </div>
 
           {/* Accept button */}
-          <Button
-            onClick={onAccept}
-            size="lg"
-            className={cn(
-              "w-full font-display text-xl tracking-wide",
-              "bg-gradient-to-r from-secondary via-gold-light to-secondary",
-              "text-secondary-foreground",
-              "hover:scale-105 transition-transform",
-              "shadow-lg hover:shadow-xl",
-              "border-2 border-gold-dark"
-            )}
-            style={{
-              boxShadow: "0 0 20px hsl(45, 100%, 50%, 0.5)",
-            }}
-          >
+          <Button onClick={onAccept} size="lg" className={cn("w-full font-display text-xl tracking-wide", "bg-gradient-to-r from-secondary via-gold-light to-secondary", "text-secondary-foreground", "hover:scale-105 transition-transform", "shadow-lg hover:shadow-xl", "border-2 border-gold-dark")} style={{
+          boxShadow: "0 0 20px hsl(45, 100%, 50%, 0.5)"
+        }}>
             ✨ ACEITAR DESTINO ✨
           </Button>
 
           {/* Footer sparkles */}
           <div className="mt-4 flex justify-center gap-2 text-2xl">
             <span className="animate-float">✨</span>
-            <span className="animate-float" style={{ animationDelay: "0.2s" }}>💫</span>
-            <span className="animate-float" style={{ animationDelay: "0.4s" }}>✨</span>
+            <span className="animate-float" style={{
+            animationDelay: "0.2s"
+          }}>💫</span>
+            <span className="animate-float" style={{
+            animationDelay: "0.4s"
+          }}>✨</span>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
