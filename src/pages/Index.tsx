@@ -5,13 +5,13 @@ import { Confetti } from "@/components/Confetti";
 const EXCUSES = ["Esse não posso, vou viajar.", "No próximo.", "Nem vou responder essa sarna (vácuo eterno).", "Tá corrido aqui.", "Tô sem ideias.", "Tô estressada."];
 const PRIZES = [{
   icon: "✈️",
-  text: "Perfeito! Nossa conversa é o seu aquecimento pré-viagem. Você vai aproveitar muito mais depois de curtir minha companhia: leve, animada e pronta pra embarcar na aventura da nossa empresa."
+  text: "Perfeito! Nossa conversa é o seu aquecimento pré-viagem. Você vai aproveitar muito mais depois de curtir minha companhia — leve, animada e pronta pra embarcar na aventura da nossa empresa."
 }, {
   icon: "⏰",
   text: "O próximo da semana passada é exatamente este final de semana. Coincidência? Não. Destino. Vem comigo."
 }, {
   icon: "👻",
-  text: "Parabéns! Você ganhou o Passe Anti-Vácuo™. A consequência é simples: agora você precisa responder. Regras do jogo."
+  text: "Parabéns! Você ganhou o Passe Anti-Vácuo™. A consequência é simples: agora você precisa responder. Regras do reality."
 }, {
   icon: "🏃‍♀️",
   text: "Ótimo, eu sou a pessoa ideal pra te ajudar a desacelerar. Há exato 1 ano você tava rindo das minhas piadinhas… lembra? Bateu saudade, né? Então bora."

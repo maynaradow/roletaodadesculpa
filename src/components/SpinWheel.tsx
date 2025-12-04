@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { computeFinalAngle } from "@/lib/wheel";
 
 interface SpinWheelProps {
   onSpinComplete: (index: number) => void;
@@ -20,57 +19,26 @@ const SEGMENTS = [
 export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWheelProps) => {
   const [rotation, setRotation] = useState(0);
   const [hoveredSegment, setHoveredSegment] = useState<number | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
+  const wheelRef = useRef<SVGGElement>(null);
 
   const spinWheel = () => {
     if (isSpinning) return;
-
+    
     setIsSpinning(true);
-
-    // Random spins between 8-12 full rotations
+    
+    // Random spins between 8-12 full rotations plus random segment for longer visual effect
     const spins = 8 + Math.random() * 4;
-    const slicesCount = SEGMENTS.length;
-    const randomSegment = Math.floor(Math.random() * slicesCount);
-
-    // compute finalAngle so chosen segment aligns with the top pointer
-    const finalAngle = computeFinalAngle(randomSegment, slicesCount, spins /*optional*/);
-
-    // Apply cumulative rotation
-    setRotation((prev) => prev + finalAngle);
-
-    // Wait real transition end on svg, with fallback
-    const node = svgRef.current;
-    let finished = false;
-
-    function cleanup() {
-      if (finished) return;
-      finished = true;
-      try {
-        node?.removeEventListener("transitionend", onEnd);
-      } catch (e) {}
+    const randomSegment = Math.floor(Math.random() * 6);
+    const segmentAngle = 360 / 6;
+    const finalAngle = spins * 360 + (randomSegment * segmentAngle) + (segmentAngle / 2);
+    
+    setRotation(prev => prev + finalAngle);
+    
+    // 5 seconds spin duration
+    setTimeout(() => {
       setIsSpinning(false);
       onSpinComplete(randomSegment);
-    }
-
-    function onEnd(e?: TransitionEvent) {
-      // Accept the event (some browsers may not provide propertyName)
-      cleanup();
-    }
-
-    node?.addEventListener("transitionend", onEnd);
-
-    // fallback in case transitionend didn't fire
-    const fallback = setTimeout(() => {
-      cleanup();
-    }, 5600);
-
-    // ensure cleanup clears the timeout
-    const originalCleanup = cleanup;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    cleanup = () => {
-      clearTimeout(fallback);
-      originalCleanup();
-    };
+    }, 5000);
   };
 
   const segmentAngle = 360 / SEGMENTS.length;
@@ -81,12 +49,12 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
   const createSegmentPath = (index: number) => {
     const startAngle = (index * segmentAngle - 90) * (Math.PI / 180);
     const endAngle = ((index + 1) * segmentAngle - 90) * (Math.PI / 180);
-
+    
     const x1 = centerX + radius * Math.cos(startAngle);
     const y1 = centerY + radius * Math.sin(startAngle);
     const x2 = centerX + radius * Math.cos(endAngle);
     const y2 = centerY + radius * Math.sin(endAngle);
-
+    
     return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
   };
 
@@ -104,8 +72,8 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     <div className="relative">
       {/* Outer glow ring */}
       <div className="absolute inset-0 -m-4 rounded-full bg-gradient-to-r from-primary via-secondary to-accent opacity-50 blur-xl animate-pulse-glow" />
-
-      {/* Decorative lights around wheel */}
+      
+      {/* Decorative lights around wheel - perfect circle */}
       <div className="absolute" style={{ width: 350, height: 350 }}>
         {[...Array(24)].map((_, i) => {
           const angle = (i * 15 - 90) * (Math.PI / 180);
@@ -131,6 +99,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
 
       {/* Main wheel container */}
       <div className="relative w-[350px] h-[350px]">
+        {/* Gold outer ring */}
         <div 
           className="absolute inset-0 rounded-full"
           style={{
@@ -140,7 +109,6 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
         >
           <div className="w-full h-full rounded-full overflow-hidden">
             <svg 
-              ref={svgRef}
               width="334" 
               height="334" 
               viewBox="0 0 350 350"
@@ -148,8 +116,9 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
                 transform: `rotate(${rotation}deg)`,
                 transition: 'transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99)'
               }}
+              
             >
-              <g>
+              <g ref={wheelRef}>
                 {SEGMENTS.map((segment, index) => {
                   const textPos = getTextPosition(index);
                   return (
@@ -202,6 +171,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
                     </g>
                   );
                 })}
+                {/* Center circle */}
                 <circle cx={centerX} cy={centerY} r="35" fill="url(#goldGradient)" stroke="hsl(45, 100%, 35%)" strokeWidth="3" />
                 <defs>
                   <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -215,7 +185,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
           </div>
         </div>
 
-        {/* Center spin button */}
+        {/* Center spin button - fixed position */}
         <button
           onClick={spinWheel}
           disabled={isSpinning}
