@@ -5,22 +5,22 @@ import { Confetti } from "@/components/Confetti";
 const EXCUSES = ["Esse não posso, vou viajar.", "No próximo.", "Nem vou responder essa sarna (vácuo eterno).", "Tá corrido aqui.", "Tô sem ideias.", "Tô estressada."];
 const PRIZES = [{
   icon: "✈️",
-  text: "Perfeito, porque o encontro é seu aquecimento pré-viagem. Te deixo leve e pronta para embarcar."
+  text: "Perfeito! Nossa conversa é o seu aquecimento pré-viagem. Você vai aproveitar muito mais depois de curtir minha companhia — leve, animada e pronta pra embarcar na aventura da nossa empresa."
 }, {
   icon: "⏰",
-  text: "Ótimo! O próximo é exatamente agora. Cadê você?"
+  text: "O próximo da semana passada é exatamente este final de semana. Coincidência? Não. Destino. Vem comigo."
 }, {
   icon: "👻",
-  text: "Parabéns! Você ganhou o Passe Anti-Vácuo™: por contrato desse reality, agora você precisa responder."
+  text: "Parabéns! Você ganhou o Passe Anti-Vácuo™. A consequência é simples: agora você precisa responder. Regras do reality."
 }, {
   icon: "🏃‍♀️",
-  text: "Ótimo! Corre pra cá rapidinho e eu te ajudo a desacelerar."
+  text: "Ótimo, eu sou a pessoa ideal pra te ajudar a desacelerar. Há exato 1 ano você tava rindo das minhas piadinhas… lembra? Bateu saudade, né? Então bora."
 }, {
   icon: "💡",
-  text: "Perfeito! Eu tenho ideias. E todas começam com você dizendo: 'Ok, vamos sair.'"
+  text: "Perfeito! Eu tenho ideias. E todas começam com você dizendo: 'Ok, vou contigo.'"
 }, {
   icon: "🧘",
-  text: "Você desbloqueou o Combo Anti-Stress: 2h de papo comigo e um sorriso garantido no final."
+  text: "Você desbloqueou o Combo Anti-Stress™: 2h de bate-papo comigo, um sorriso garantido e uma empresa de sucesso no final."
 }];
 const Index = () => {
   const [isSpinning, setIsSpinning] = useState(false);
@@ -32,7 +32,7 @@ const Index = () => {
     setShowConfetti(true);
     setTimeout(() => {
       setShowPrize(true);
-    }, 500);
+    }, 100);
   };
   const handleAcceptPrize = () => {
     setShowPrize(false);
