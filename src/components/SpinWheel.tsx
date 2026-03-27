@@ -28,11 +28,14 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     const spins = 8 + Math.random() * 4;
     const randomSegment = 3;
-    const targetAngle = 210; // center of segment 3 (3 * 60 + 30)
+    const segAngle = 360 / SEGMENTS.length;
+    const pointerAngle = 270;
+    const segmentCenterAngle = (randomSegment * segAngle) + (segAngle / 2) - 90;
+    const targetRotation = (pointerAngle - segmentCenterAngle + 360) % 360;
     
     setRotation(prev => {
-      const currentMod = prev % 360;
-      const correction = (targetAngle - currentMod + 360) % 360;
+      const currentMod = ((prev % 360) + 360) % 360;
+      const correction = (targetRotation - currentMod + 360) % 360;
       return prev + spins * 360 + correction;
     });
     
