@@ -1,28 +1,58 @@
 
+Diagnóstico: o cálculo atual usa o ângulo errado para o segmento “Livro de programação”.
 
-# Bug: Roleta não para visualmente no segmento correto
-
-## Diagnóstico
-
-O problema está na linha 35 do `SpinWheel.tsx`:
-
-```js
-setRotation(prev => prev + finalAngle);
+O código hoje faz:
+```ts
+const targetAngle = 210;
 ```
 
-O `finalAngle` é calculado assumindo que a rotação começa de 0°, mas na verdade ele é **somado** à rotação anterior (`prev`). Após o primeiro giro, `prev` já não é zero, então o ângulo final acumulado não corresponde mais ao segmento 3. A cada giro subsequente, o erro se acumula e a roleta para em posições visuais diferentes.
+Mas esse `210°` foi calculado como se a fatia 0 começasse em `0°`. No seu SVG, as fatias são desenhadas com este offset:
+```ts
+(index * segmentAngle - 90)
+```
 
-## Correção
+Ou seja: a roleta começa no topo (`-90°`), não em `0°`.
 
-No `spinWheel()`, calcular o ângulo necessário **relativo à rotação atual** para que a roleta sempre pare visualmente no segmento "Livro de programação" (index 3):
+Com a geometria real da roda:
+- cada fatia tem `60°`
+- o centro da fatia 3 fica em `120°`
+- o ponteiro está no topo, em `270°` / `-90°`
+- então a rotação correta para alinhar a fatia 3 no ponteiro é `150°`, não `210°`
 
-1. Calcular o ângulo-alvo absoluto: `targetAngle = 210°` (centro do segmento 3 considerando que os segmentos começam no topo)
-2. Calcular quanto falta para alinhar: `currentMod = prev % 360`, `correction = (targetAngle - currentMod + 360) % 360`
-3. Somar as voltas visuais: `finalAngle = spins * 360 + correction`
+Por isso acontece este bug:
+- o resultado lógico sempre é índice `3`
+- mas a animação está parando em um ângulo visual incompatível com a posição real da fatia
+- então o card mostra “Livro de programação”, enquanto o ponteiro aponta para outra opção
 
-Isso garante que `(prev + finalAngle) % 360 === 210` sempre, independente de quantas vezes o usuário girou.
+Plano de correção:
+1. Remover o valor fixo incorreto `210`
+2. Calcular o ângulo do centro da fatia a partir da mesma lógica usada para desenhar a roda
+3. Calcular o alvo do ponteiro com base no topo da roda
+4. Ajustar a correção acumulada usando esse alvo real
 
-## Arquivo afetado
+Abordagem recomendada:
+```ts
+const segmentAngle = 360 / SEGMENTS.length;
+const winningIndex = 3;
+const pointerAngle = 270; // topo
+const segmentCenterAngle = (winningIndex * segmentAngle) + (segmentAngle / 2) - 90;
+const targetRotation = (pointerAngle - segmentCenterAngle + 360) % 360;
+```
 
-`src/components/SpinWheel.tsx` — apenas a função `spinWheel` (linhas 25-41).
+Depois, no `setRotation`:
+```ts
+const currentMod = ((prev % 360) + 360) % 360;
+const correction = (targetRotation - currentMod + 360) % 360;
+return prev + spins * 360 + correction;
+```
 
+Resultado esperado:
+- a lógica continua viciada no índice 3
+- o ponteiro passa a apontar visualmente para “Livro de programação” em todos os giros
+- a correção deixa de depender de chute manual e passa a seguir a geometria real da roleta
+
+Arquivo afetado:
+- `src/components/SpinWheel.tsx`
+
+Observação técnica:
+o problema não é mais “acúmulo de rotação” apenas; essa parte já foi parcialmente tratada. O bug restante é principalmente de mapeamento geométrico: o alvo visual foi calculado com referência angular errada.
