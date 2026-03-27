@@ -8,12 +8,12 @@ interface SpinWheelProps {
 }
 
 const SEGMENTS = [
-  { label: "Vou viajar", icon: "✈️", color: "hsl(330, 100%, 60%)" },
-  { label: "No próximo", icon: "⏰", color: "hsl(45, 100%, 55%)" },
-  { label: "Vácuo eterno", icon: "👻", color: "hsl(180, 100%, 50%)" },
-  { label: "Tá corrido", icon: "🏃‍♀️", color: "hsl(120, 80%, 50%)" },
-  { label: "Sem ideias", icon: "💡", color: "hsl(25, 100%, 55%)" },
-  { label: "Tô estressada", icon: "🧘", color: "hsl(280, 100%, 65%)" },
+  { label: "R$ 1.000", icon: "💰", color: "hsl(330, 100%, 60%)" },
+  { label: "Redução de testa", icon: "💇", color: "hsl(45, 100%, 55%)" },
+  { label: "R$ 10", icon: "🪙", color: "hsl(180, 100%, 50%)" },
+  { label: "Livro de programação", icon: "📖", color: "hsl(120, 80%, 50%)" },
+  { label: "Tatuagem", icon: "🎨", color: "hsl(25, 100%, 55%)" },
+  { label: "Um Abraço", icon: "🤗", color: "hsl(280, 100%, 65%)" },
 ];
 
 export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWheelProps) => {
