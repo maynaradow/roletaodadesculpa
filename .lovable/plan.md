@@ -1,52 +1,28 @@
-# Plano: Transformar "Roletão das Desculpas" em "Roletão do Presente"
-
-## Resumo
-
-Alterar o conceito da roleta de "desculpas" para "presentes", com 6 novos segmentos e a roleta **viciada** para sempre cair em "Livro de Pesca". Textos de resultado adaptados para cada opção.
-
-## Arquivos afetados
-
-### 1. `src/components/SpinWheel.tsx`
-
-**Trocar os segmentos** para:
 
 
-| #   | Label                | Emoji | Cor (manter vibrantes) |
-| --- | -------------------- | ----- | ---------------------- |
-| 0   | R$ 1.000             | 💰    | rosa                   |
-| 1   | Redução de testa     | 💇    | amarelo                |
-| 2   | R$ 10                | 🪙    | ciano                  |
-| 3   | Livro de programação | 📖    | verde                  |
-| 4   | Tatuagem             | 🎨    | laranja                |
-| 5   | Um abraço            | 🤗    | lilás                  |
+# Bug: Roleta não para visualmente no segmento correto
 
+## Diagnóstico
 
-**Viciar a roleta:** Na função `spinWheel`, substituir `randomSegment = Math.floor(Math.random() * 6)` por `randomSegment = 3` (index fixo do "Livro de programação"). A roleta ainda gira com rotações visuais aleatórias, mas sempre para no segmento 3. O cálculo de `finalAngle` continua usando spins aleatórios para parecer natural.
+O problema está na linha 35 do `SpinWheel.tsx`:
 
-### 2. `src/pages/Index.tsx`
+```js
+setRotation(prev => prev + finalAngle);
+```
 
-**Título:** Trocar "ROLETÃO DAS DESCULPAS" por "ROLETÃO DO PRESENTE".
+O `finalAngle` é calculado assumindo que a rotação começa de 0°, mas na verdade ele é **somado** à rotação anterior (`prev`). Após o primeiro giro, `prev` já não é zero, então o ângulo final acumulado não corresponde mais ao segmento 3. A cada giro subsequente, o erro se acumula e a roleta para em posições visuais diferentes.
 
-**Trocar `EXCUSES**` (renomear para `OPTIONS` ou manter) para os nomes das 6 opções.
+## Correção
 
-**Trocar `PRIZES**` com textos temáticos para cada presente. Exemplos:
+No `spinWheel()`, calcular o ângulo necessário **relativo à rotação atual** para que a roleta sempre pare visualmente no segmento "Livro de programação" (index 3):
 
-1. 💰 R$ 1.000 — "Uau! Mil reais! Mas... espera... a roleta decidiu que você merece algo ainda melhor. Gira de novo!"
-2. 💇 Redução de testa — "Visual novo, vida nova! Mas o destino tem outros planos pra você..."
-3. 🪙 R$ 10 — "Dez reais! Dá pra um café... ou quase. Mas o universo quer te dar outra coisa."
-4. 📖 Livro de programação — "PARABÉNS! Você ganhou o presente mais exclusivo, raro e insubstituível: um Livro sobre programação! Conhecimento que nenhum dinheiro compra.
-5. 🎨 Tatuagem — "Uma tattoo! Marcante... literalmente. Mas será que é isso que o destino reservou?"
-6. 🤗 Um Abraço — "Um abraço quentinho! Mas a roleta sabe que você precisa de algo mais especial..."
+1. Calcular o ângulo-alvo absoluto: `targetAngle = 210°` (centro do segmento 3 considerando que os segmentos começam no topo)
+2. Calcular quanto falta para alinhar: `currentMod = prev % 360`, `correction = (targetAngle - currentMod + 360) % 360`
+3. Somar as voltas visuais: `finalAngle = spins * 360 + correction`
 
-> Nota: Como sempre cai no index 3, na prática só o texto do Livro de Pesca será exibido, mas todos os textos existem para manter a consistência caso a lógica mude.
+Isso garante que `(prev + finalAngle) % 360 === 210` sempre, independente de quantas vezes o usuário girou.
 
-**Texto de instrução:** Trocar "AGUARDE SEU DESTINO" e "CLIQUE EM 'GIRA!'" para algo como "AGUARDE SEU PRESENTE!" e "CLIQUE EM 'GIRA!' PARA GANHAR SEU PRESENTE".
+## Arquivo afetado
 
-### 3. `index.html`
+`src/components/SpinWheel.tsx` — apenas a função `spinWheel` (linhas 25-41).
 
-Atualizar `<title>` e meta description para "Roletão do Presente".
-
-## O que NÃO muda
-
-- Visual, cores, animações, confetti, PrizeCard, bolinhas piscantes — tudo permanece igual.
-- Duração do giro (5s), easing, layout responsivo.
