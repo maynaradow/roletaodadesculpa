@@ -80,7 +80,7 @@ const Index = () => {
           {/* Instructions */}
           <div className="mt-8 text-center">
             <p className={`font-display text-2xl transition-all duration-300 ${isSpinning ? "text-primary animate-pulse" : "text-muted-foreground"}`}>
-              {isSpinning ? "🎰 GIRANDO... AGUARDE SEU DESTINO! 🎰" : "👆 CLIQUE EM 'GIRA!' PARA COMEÇAR 👆"}
+              {isSpinning ? "🎁 GIRANDO... AGUARDE SEU PRESENTE! 🎁" : "👆 CLIQUE EM 'GIRA!' PARA GANHAR SEU PRESENTE 👆"}
             </p>
           </div>
         </main>
