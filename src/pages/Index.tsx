@@ -65,9 +65,9 @@ const Index = () => {
           <div className="inline-block">
             
             <h1 className="font-display text-4xl sm:text-6xl md:text-7xl text-secondary text-gold-glow leading-tight">
-              ROLETÃO DAS
+              ROLETÃO DO
               <br />
-              DESCULPAS
+              PRESENTE
             </h1>
             
           </div>
