@@ -2,25 +2,25 @@ import { useState } from "react";
 import { SpinWheel } from "@/components/SpinWheel";
 import { PrizeCard } from "@/components/PrizeCard";
 import { Confetti } from "@/components/Confetti";
-const EXCUSES = ["Esse não posso, vou viajar.", "No próximo.", "Nem vou responder essa sarna (vácuo eterno).", "Tá corrido aqui.", "Tô sem ideias.", "Tô estressada."];
+const OPTIONS = ["R$ 1.000", "Redução de testa", "R$ 10", "Livro de programação", "Tatuagem", "Um Abraço"];
 const PRIZES = [{
-  icon: "✈️",
-  text: "Perfeito! Nossa conversa é o seu aquecimento pré-viagem. Você vai aproveitar muito mais depois de curtir minha companhia — leve, animada e pronta pra embarcar na aventura da nossa empresa."
+  icon: "💰",
+  text: "Uau! Mil reais! Mas... espera... a roleta decidiu que você merece algo ainda melhor. Gira de novo!"
 }, {
-  icon: "⏰",
-  text: "O próximo da semana passada é exatamente este final de semana. Coincidência? Não. Destino. Vem comigo."
+  icon: "💇",
+  text: "Visual novo, vida nova! Mas o destino tem outros planos pra você..."
 }, {
-  icon: "👻",
-  text: "Parabéns! Você ganhou o Passe Anti-Vácuo™. A consequência é simples: agora você precisa responder. Regras do reality."
+  icon: "🪙",
+  text: "Dez reais! Dá pra um café... ou quase. Mas o universo quer te dar outra coisa."
 }, {
-  icon: "🏃‍♀️",
-  text: "Ótimo, eu sou a pessoa ideal pra te ajudar a desacelerar. Há exato 1 ano você tava rindo das minhas piadinhas… lembra? Bateu saudade, né? Então bora."
+  icon: "📖",
+  text: "PARABÉNS! Você ganhou o presente mais exclusivo, raro e insubstituível: um Livro sobre Programação! Conhecimento que nenhum dinheiro compra. Prepare o café, o notebook e a paciência — sua nova vida começa agora! 💻"
 }, {
-  icon: "💡",
-  text: "Perfeito! Eu tenho ideias. E todas começam com você dizendo: 'Ok, vou contigo.'"
+  icon: "🎨",
+  text: "Uma tattoo! Marcante... literalmente. Mas será que é isso que o destino reservou?"
 }, {
-  icon: "🧘",
-  text: "Você desbloqueou o Combo Anti-Stress™: 2h de bate-papo comigo, um sorriso garantido e uma empresa de sucesso no final."
+  icon: "🤗",
+  text: "Um abraço quentinho! Mas a roleta sabe que você precisa de algo mais especial..."
 }];
 const Index = () => {
   const [isSpinning, setIsSpinning] = useState(false);
