@@ -26,13 +26,15 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     setIsSpinning(true);
     
-    // Random spins between 8-12 full rotations plus random segment for longer visual effect
     const spins = 8 + Math.random() * 4;
     const randomSegment = 3;
-    const segmentAngle = 360 / 6;
-    const finalAngle = spins * 360 + (randomSegment * segmentAngle) + (segmentAngle / 2);
+    const targetAngle = 210; // center of segment 3 (3 * 60 + 30)
     
-    setRotation(prev => prev + finalAngle);
+    setRotation(prev => {
+      const currentMod = prev % 360;
+      const correction = (targetAngle - currentMod + 360) % 360;
+      return prev + spins * 360 + correction;
+    });
     
     // 5 seconds spin duration
     setTimeout(() => {
