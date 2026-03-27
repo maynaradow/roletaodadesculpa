@@ -90,7 +90,7 @@ const Index = () => {
       </div>
 
       {/* Prize popup */}
-      {selectedIndex !== null && <PrizeCard excuse={EXCUSES[selectedIndex]} prize={PRIZES[selectedIndex].text} icon={PRIZES[selectedIndex].icon} isVisible={showPrize} onAccept={handleAcceptPrize} />}
+      {selectedIndex !== null && <PrizeCard excuse={OPTIONS[selectedIndex]} prize={PRIZES[selectedIndex].text} icon={PRIZES[selectedIndex].icon} isVisible={showPrize} onAccept={handleAcceptPrize} />}
     </div>;
 };
 export default Index;

@@ -28,7 +28,7 @@ export const SpinWheel = ({ onSpinComplete, isSpinning, setIsSpinning }: SpinWhe
     
     // Random spins between 8-12 full rotations plus random segment for longer visual effect
     const spins = 8 + Math.random() * 4;
-    const randomSegment = Math.floor(Math.random() * 6);
+    const randomSegment = 3;
     const segmentAngle = 360 / 6;
     const finalAngle = spins * 360 + (randomSegment * segmentAngle) + (segmentAngle / 2);
     
